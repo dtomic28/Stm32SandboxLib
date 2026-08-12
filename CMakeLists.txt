@@ -15,7 +15,7 @@ set(TOMKO_LIB_ENABLE_EXAMPLE OFF CACHE BOOL "Build examples for all sublibs")
 
 # --- External dependencies ---
 if(TOMKO_LIB_ENABLE_TESTS)
-    add_subdirectory(external/gtest)
+    add_subdirectory(external/GTest)
     enable_testing()
 endif()
 
