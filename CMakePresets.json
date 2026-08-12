@@ -1,0 +1,85 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "binaryDir": "${sourceDir}/build/${presetName}"
+        },
+        {
+            "name": "base-windows",
+            "hidden": true,
+            "inherits": "base",
+            "generator": "Visual Studio 18 2026",
+            "architecture": "x64",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "base-linux",
+            "hidden": true,
+            "inherits": "base",
+            "generator": "Ninja",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "debug",
+            "inherits": ["base-windows", "base-linux"],
+            "displayName": "Debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "release",
+            "inherits": ["base-windows", "base-linux"],
+            "displayName": "Release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "ci",
+            "inherits": ["base-windows", "base-linux"],
+            "displayName": "CI — all sublibs, tests and examples enabled",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE":           "Release",
+                "TOMKO_LIB_ENABLE_TESTS":     "ON",
+                "TOMKO_LIB_ENABLE_EXAMPLE":   "ON",
+                "TOMKO_ENABLE_CAN_DATABASE":  "ON"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "debug",
+            "configurePreset": "debug"
+        },
+        {
+            "name": "release",
+            "configurePreset": "release"
+        },
+        {
+            "name": "ci",
+            "configurePreset": "ci",
+            "configuration": "Release"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "ci",
+            "configurePreset": "ci",
+            "configuration": "Release",
+            "output": {
+                "outputOnFailure": true
+            }
+        }
+    ]
+}

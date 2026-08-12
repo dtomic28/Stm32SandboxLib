@@ -1,0 +1,14 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/STMProjects/tomko_lib/build/ci/cmake_install.cmake",
+		"C:/STMProjects/tomko_lib/build/ci/external/gtest/cmake_install.cmake",
+		"C:/STMProjects/tomko_lib/build/ci/_deps/gtest-build/cmake_install.cmake",
+		"C:/STMProjects/tomko_lib/build/ci/_deps/gtest-build/googletest/cmake_install.cmake",
+		"C:/STMProjects/tomko_lib/build/ci/can_database/cmake_install.cmake",
+		"C:/STMProjects/tomko_lib/build/ci/can_database/src/cmake_install.cmake",
+		"C:/STMProjects/tomko_lib/build/ci/can_database/example/cmake_install.cmake",
+		"C:/STMProjects/tomko_lib/build/ci/can_database/test/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

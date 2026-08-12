@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/STMProjects/tomko_lib/build/ci/_deps/gtest-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

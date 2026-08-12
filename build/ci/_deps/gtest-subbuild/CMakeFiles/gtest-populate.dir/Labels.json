@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/STMProjects/tomko_lib/build/ci/_deps/gtest-subbuild/CMakeFiles/gtest-populate"
+		},
+		{
+			"file" : "C:/STMProjects/tomko_lib/build/ci/_deps/gtest-subbuild/CMakeFiles/8deffe55d4cd24254b6fb9dcc57ceba0/gtest-populate.rule"
+		},
+		{
+			"file" : "C:/STMProjects/tomko_lib/build/ci/_deps/gtest-subbuild/CMakeFiles/33506fb001bbb8fac1024755ac68c578/gtest-populate-complete.rule"
+		},
+		{
+			"file" : "C:/STMProjects/tomko_lib/build/ci/_deps/gtest-subbuild/CMakeFiles/6861a5e96b347489c8778737304687ee/gtest-populate-build.rule"
+		},
+		{
+			"file" : "C:/STMProjects/tomko_lib/build/ci/_deps/gtest-subbuild/CMakeFiles/6861a5e96b347489c8778737304687ee/gtest-populate-configure.rule"
+		},
+		{
+			"file" : "C:/STMProjects/tomko_lib/build/ci/_deps/gtest-subbuild/CMakeFiles/6861a5e96b347489c8778737304687ee/gtest-populate-download.rule"
+		},
+		{
+			"file" : "C:/STMProjects/tomko_lib/build/ci/_deps/gtest-subbuild/CMakeFiles/6861a5e96b347489c8778737304687ee/gtest-populate-install.rule"
+		},
+		{
+			"file" : "C:/STMProjects/tomko_lib/build/ci/_deps/gtest-subbuild/CMakeFiles/6861a5e96b347489c8778737304687ee/gtest-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/STMProjects/tomko_lib/build/ci/_deps/gtest-subbuild/CMakeFiles/6861a5e96b347489c8778737304687ee/gtest-populate-patch.rule"
+		},
+		{
+			"file" : "C:/STMProjects/tomko_lib/build/ci/_deps/gtest-subbuild/CMakeFiles/6861a5e96b347489c8778737304687ee/gtest-populate-test.rule"
+		},
+		{
+			"file" : "C:/STMProjects/tomko_lib/build/ci/_deps/gtest-subbuild/CMakeFiles/6861a5e96b347489c8778737304687ee/gtest-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"gtest-populate"
+		],
+		"name" : "gtest-populate"
+	}
+}

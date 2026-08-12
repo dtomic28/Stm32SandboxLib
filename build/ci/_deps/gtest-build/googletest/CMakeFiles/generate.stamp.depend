@@ -1,0 +1,18 @@
+# CMake generation dependency list for this directory.
+C:/ST/STM32CubeCLT_1.22.0/CMake/share/cmake-4.3/Modules/BasicConfigVersion-AnyNewerVersion.cmake.in
+C:/ST/STM32CubeCLT_1.22.0/CMake/share/cmake-4.3/Modules/CMakePackageConfigHelpers.cmake
+C:/ST/STM32CubeCLT_1.22.0/CMake/share/cmake-4.3/Modules/CheckCSourceCompiles.cmake
+C:/ST/STM32CubeCLT_1.22.0/CMake/share/cmake-4.3/Modules/CheckIncludeFile.cmake
+C:/ST/STM32CubeCLT_1.22.0/CMake/share/cmake-4.3/Modules/CheckLibraryExists.cmake
+C:/ST/STM32CubeCLT_1.22.0/CMake/share/cmake-4.3/Modules/FindPackageHandleStandardArgs.cmake
+C:/ST/STM32CubeCLT_1.22.0/CMake/share/cmake-4.3/Modules/FindPackageMessage.cmake
+C:/ST/STM32CubeCLT_1.22.0/CMake/share/cmake-4.3/Modules/FindPython/Support.cmake
+C:/ST/STM32CubeCLT_1.22.0/CMake/share/cmake-4.3/Modules/FindPython3.cmake
+C:/ST/STM32CubeCLT_1.22.0/CMake/share/cmake-4.3/Modules/FindThreads.cmake
+C:/ST/STM32CubeCLT_1.22.0/CMake/share/cmake-4.3/Modules/Internal/CheckSourceCompiles.cmake
+C:/ST/STM32CubeCLT_1.22.0/CMake/share/cmake-4.3/Modules/WriteBasicConfigVersionFile.cmake
+C:/STMProjects/tomko_lib/build/ci/_deps/gtest-src/googletest/CMakeLists.txt
+C:/STMProjects/tomko_lib/build/ci/_deps/gtest-src/googletest/cmake/Config.cmake.in
+C:/STMProjects/tomko_lib/build/ci/_deps/gtest-src/googletest/cmake/gtest.pc.in
+C:/STMProjects/tomko_lib/build/ci/_deps/gtest-src/googletest/cmake/gtest_main.pc.in
+C:/STMProjects/tomko_lib/build/ci/_deps/gtest-src/googletest/cmake/internal_utils.cmake

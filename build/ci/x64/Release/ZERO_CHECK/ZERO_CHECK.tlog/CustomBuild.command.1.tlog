@@ -1,0 +1,10 @@
+^C:\STMPROJECTS\TOMKO_LIB\BUILD\CI\CMAKEFILES\46553CE5769B1F68EF38BF574F298DA5\GENERATE.STAMP.RULE
+setlocal
+C:\ST\STM32CubeCLT_1.22.0\CMake\bin\cmake.exe -SC:/STMProjects/tomko_lib -BC:/STMProjects/tomko_lib/build/ci --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/STMProjects/tomko_lib/build/ci/tomko_lib.slnx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\STMProjects\tomko_lib\build\ci\_deps\gtest-subbuild\CMakeFiles\8deffe55d4cd24254b6fb9dcc57ceba0\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{CB22F21A-917A-3528-9A09-8A731F0615CF}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

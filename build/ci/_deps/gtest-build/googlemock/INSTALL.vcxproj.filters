@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\STMProjects\tomko_lib\build\ci\CMakeFiles\5970e45f7ac6ad7b28071e08d6af4e1c\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{7B5B69FF-21DA-3603-8B06-3C521413C21F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
