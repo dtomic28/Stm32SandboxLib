@@ -11,43 +11,38 @@
             "hidden": true,
             "inherits": "base",
             "generator": "Visual Studio 18 2026",
-            "architecture": "x64",
+            "architecture": "x64"
+        },
+        {
+            "name": "debug",
+            "inherits": "base-windows",
+            "displayName": "Debug (Windows)",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
                 "rhs": "Windows"
-            }
-        },
-        {
-            "name": "base-linux",
-            "hidden": true,
-            "inherits": "base",
-            "generator": "Ninja",
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Linux"
-            }
-        },
-        {
-            "name": "debug",
-            "inherits": ["base-windows", "base-linux"],
-            "displayName": "Debug",
+            },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
             }
         },
         {
             "name": "release",
-            "inherits": ["base-windows", "base-linux"],
-            "displayName": "Release",
+            "inherits": "base-windows",
+            "displayName": "Release (Windows)",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
         },
         {
             "name": "ci",
-            "inherits": ["base-windows", "base-linux"],
+            "inherits": "base",
+            "generator": "Ninja",
             "displayName": "CI — all sublibs, tests and examples enabled",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE":           "Release",
@@ -60,23 +55,23 @@
     "buildPresets": [
         {
             "name": "debug",
-            "configurePreset": "debug"
+            "configurePreset": "debug",
+            "configuration": "Debug"
         },
         {
             "name": "release",
-            "configurePreset": "release"
+            "configurePreset": "release",
+            "configuration": "Release"
         },
         {
             "name": "ci",
-            "configurePreset": "ci",
-            "configuration": "Release"
+            "configurePreset": "ci"
         }
     ],
     "testPresets": [
         {
             "name": "ci",
             "configurePreset": "ci",
-            "configuration": "Release",
             "output": {
                 "outputOnFailure": true
             }
