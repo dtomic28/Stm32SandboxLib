@@ -16,13 +16,14 @@
 #include "can_database/can_database.h"
 #include "can_database/can_codec.h"
 #include "can_database/can_ids.h"
+#include "can_database/can_publish.h"
 
 /* ------------------------------------------------------------------ */
 /* Mock CAN port                                                        */
 /* ------------------------------------------------------------------ */
 
 static void MockCAN_Send(const CanFrame_t *frame) {
-    printf("  [TX] ID=0x%03X DLC=%d  DATA=", frame->id, frame->dlc);
+    printf("  [TX] ID=0x%03X DLC=%d  DATA=", (unsigned int)frame->id, frame->dlc);
     for (int i = 0; i < frame->dlc; i++) {
         printf("%02X ", frame->data[i]);
     }

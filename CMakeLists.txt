@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.25)
 project(tomko_lib C)
 
 include(cmake/fetch_dependency.cmake)
+include(cmake/warnings.cmake)
 
 # --- Output directories ---
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -10,8 +11,9 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # --- Options ---
-set(TOMKO_LIB_ENABLE_TESTS   OFF CACHE BOOL "Enable tests for all sublibs")
-set(TOMKO_LIB_ENABLE_EXAMPLE OFF CACHE BOOL "Build examples for all sublibs")
+set(TOMKO_LIB_ENABLE_TESTS      OFF CACHE BOOL "Enable tests for all sublibs")
+set(TOMKO_LIB_ENABLE_EXAMPLE    OFF CACHE BOOL "Build examples for all sublibs")
+set(TOMKO_WARNINGS_AS_ERRORS    OFF CACHE BOOL "Treat compiler warnings as errors (set ON in the ci preset)")
 
 # --- External dependencies ---
 if(TOMKO_LIB_ENABLE_TESTS)

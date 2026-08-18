@@ -84,6 +84,7 @@ add_library(${PROJECT_NAME} STATIC
 add_library(tomko::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 target_compile_features(${PROJECT_NAME} PRIVATE c_std_11)
+tomko_enable_warnings(${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC

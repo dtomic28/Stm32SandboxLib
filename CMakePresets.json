@@ -48,7 +48,8 @@
                 "CMAKE_BUILD_TYPE":           "Release",
                 "TOMKO_LIB_ENABLE_TESTS":     "ON",
                 "TOMKO_LIB_ENABLE_EXAMPLE":   "ON",
-                "TOMKO_ENABLE_CAN_DATABASE":  "ON"
+                "TOMKO_ENABLE_CAN_DATABASE":  "ON",
+                "TOMKO_WARNINGS_AS_ERRORS":   "ON"
             }
         }
     ],
