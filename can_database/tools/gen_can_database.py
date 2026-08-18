@@ -139,11 +139,18 @@ def emit_struct(messages):
 
 
 def emit_ids(messages):
+    # Plain #define, not `enum { CAN_ID_X = ..., CAN_BUS_X = ... };`.
+    # An enum block here would give CAN_BUS_X a *new, distinct enum type*
+    # of its own, even though its value equals a CanBusId_t enumerator --
+    # GCC's -Wenum-conversion (correctly) flags every CanDb_Send(CAN_BUS_X, ...)
+    # call as passing the wrong enum type. #define is pure text substitution,
+    # so CAN_BUS_X stays exactly a CanBusId_t wherever it's used.
     lines = [HEADER_NOTE, "#pragma once", '#include "can_database/can_frame.h"', ""]
     for msg in messages:
         const_name = screaming_snake(msg["name"])
-        lines.append(f"enum {{ CAN_ID_{const_name} = {hex(msg['id'])}, "
-                      f"CAN_BUS_{const_name} = {msg['bus']} }};")
+        lines.append(f"#define CAN_ID_{const_name} {hex(msg['id'])}U")
+        lines.append(f"#define CAN_BUS_{const_name} {msg['bus']}")
+        lines.append("")
     return "\n".join(lines) + "\n"
 
 
