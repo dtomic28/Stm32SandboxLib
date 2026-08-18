@@ -1,0 +1,11 @@
+VERSION ""
+
+NS_ :
+
+BS_:
+
+BU_: Vector__XXX
+
+BO_ 48 PackedMsg: 3 Vector__XXX
+ SG_ narrow : 0|24@1+ (1,0) [0|0] ""  Vector__XXX
+

@@ -1,0 +1,31 @@
+# Small, fixed fixture for gen_can_database.py's own test suite — kept
+# separate from the real can_messages.yaml so golden-file tests don't
+# change just because a real project message was added. Covers the
+# three codegen shapes: plain byte-aligned passthrough (fast path),
+# scaled float with a nonzero offset (slow path + offset handling), and
+# a genuinely sub-byte-width packed field (slow path, exercises
+# CanBits_Pack/Unpack + the range assert).
+
+messages:
+  - name: PlainMsg
+    id: 0x10
+    bus: CAN_BUS_SENSOR
+    dlc: 4
+    signals:
+      - { name: a, type: uint8_t, bits: 8 }
+      - { name: b, type: int16_t, bits: 16 }
+      - { name: c, type: uint8_t, bits: 8 }
+
+  - name: ScaledMsg
+    id: 0x20
+    bus: CAN_BUS_POWERTRAIN
+    dlc: 2
+    signals:
+      - { name: temp, type: float, wire_type: int16_t, bits: 16, scale: 0.01, offset: -40 }
+
+  - name: PackedMsg
+    id: 0x30
+    bus: CAN_BUS_DASHBOARD
+    dlc: 3
+    signals:
+      - { name: narrow, type: uint32_t, bits: 24 }

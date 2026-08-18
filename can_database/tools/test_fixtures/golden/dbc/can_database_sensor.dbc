@@ -1,0 +1,13 @@
+VERSION ""
+
+NS_ :
+
+BS_:
+
+BU_: Vector__XXX
+
+BO_ 16 PlainMsg: 4 Vector__XXX
+ SG_ a : 0|8@1+ (1,0) [0|0] ""  Vector__XXX
+ SG_ b : 8|16@1- (1,0) [0|0] ""  Vector__XXX
+ SG_ c : 24|8@1+ (1,0) [0|0] ""  Vector__XXX
+

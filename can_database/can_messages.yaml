@@ -1,0 +1,94 @@
+# Single source of truth for every CAN message. Everything else —
+# structs, IDs, codec, publish API, and the .dbc file — is generated
+# from this file by tools/gen_can_database.py at CMake configure and
+# build time. Edit this file only; do not hand-edit generated output.
+#
+# Signal fields:
+#   name        struct field name
+#   type        firmware-side C type (what code sees: uint16_t, int8_t, float, ...)
+#   wire_type   raw C type used for bit-packing on the wire (optional,
+#               defaults to `type`). Set this when `type` differs from
+#               what's actually packed — e.g. a physical float in the
+#               struct backed by a scaled integer on the bus.
+#   bits        packed width in bits. Independent of wire_type's natural
+#               width — e.g. wire_type: uint32_t, bits: 24 packs only the
+#               low 24 bits. Signals are packed LSB-first, back to back,
+#               in list order; that order is the authoritative bit layout.
+#   scale       physical = raw * scale + offset (also written into the .dbc)
+#   offset
+#   unit        for documentation and the .dbc; "" if unitless
+#
+# Any gap between the last signal's end bit and `dlc * 8` stays zero on
+# the wire (Encode zero-fills the frame before packing signals).
+
+messages:
+  - name: WheelSpeeds
+    id: 0x100
+    bus: CAN_BUS_SENSOR
+    dlc: 8
+    description: Wheel speeds — all four corners
+    signals:
+      - { name: fl, type: float, wire_type: uint16_t, bits: 16, scale: 0.1, offset: 0, unit: RPM }
+      - { name: fr, type: float, wire_type: uint16_t, bits: 16, scale: 0.1, offset: 0, unit: RPM }
+      - { name: rl, type: float, wire_type: uint16_t, bits: 16, scale: 0.1, offset: 0, unit: RPM }
+      - { name: rr, type: float, wire_type: uint16_t, bits: 16, scale: 0.1, offset: 0, unit: RPM }
+
+  - name: PowertrainCtrl
+    id: 0x200
+    bus: CAN_BUS_POWERTRAIN
+    dlc: 8
+    description: Driver inputs — throttle/brake in 0.5% steps, torque limit in 0.1 Nm
+    signals:
+      - { name: throttle_pct, type: uint8_t,  bits: 8,  scale: 0.5, offset: 0, unit: "%" }
+      - { name: brake_pct,    type: uint8_t,  bits: 8,  scale: 0.5, offset: 0, unit: "%" }
+      - { name: torque_limit, type: uint16_t, bits: 16, scale: 0.1, offset: 0, unit: Nm }
+      - { name: flags,        type: uint8_t,  bits: 8,  scale: 1,   offset: 0, unit: "" }
+      # bits 40-63 reserved — left zero on the wire, no struct field
+
+  - name: BatteryStatus
+    id: 0x300
+    bus: CAN_BUS_POWERTRAIN
+    dlc: 8
+    description: Accumulator status
+    signals:
+      - { name: voltage_mv,  type: uint16_t, bits: 16, scale: 1, offset: 0, unit: mV }
+      - { name: current_ma,  type: int16_t,  bits: 16, scale: 1, offset: 0, unit: mA }  # signed — negative = charging
+      - { name: soc_pct,     type: uint8_t,  bits: 8,  scale: 1, offset: 0, unit: "%" }
+      - { name: temp_max,    type: int8_t,   bits: 8,  scale: 1, offset: 0, unit: degC }  # hottest cell
+      - { name: fault_flags, type: uint8_t,  bits: 8,  scale: 1, offset: 0, unit: "" }
+      # bits 56-63 reserved
+
+  - name: MotorStatus
+    id: 0x400
+    bus: CAN_BUS_POWERTRAIN
+    dlc: 8
+    description: Motor and inverter status
+    signals:
+      - { name: rpm,           type: uint16_t, bits: 16, scale: 1,   offset: 0, unit: RPM }
+      - { name: torque_actual, type: int16_t,  bits: 16, scale: 0.1, offset: 0, unit: Nm }  # signed
+      - { name: temp_motor,    type: int8_t,   bits: 8,  scale: 1,   offset: 0, unit: degC }
+      - { name: temp_inverter, type: int8_t,   bits: 8,  scale: 1,   offset: 0, unit: degC }
+      - { name: fault_flags,   type: uint16_t, bits: 16, scale: 1,   offset: 0, unit: "" }
+
+  - name: IMUAccel
+    id: 0x500
+    bus: CAN_BUS_SENSOR
+    dlc: 8
+    description: IMU linear acceleration
+    signals:
+      - { name: accel_x, type: int16_t, bits: 16, scale: 1, offset: 0, unit: mg }
+      - { name: accel_y, type: int16_t, bits: 16, scale: 1, offset: 0, unit: mg }
+      - { name: accel_z, type: int16_t, bits: 16, scale: 1, offset: 0, unit: mg }
+      # bits 48-63 reserved
+
+  - name: DashboardCtrl
+    id: 0x600
+    bus: CAN_BUS_DASHBOARD
+    dlc: 8
+    description: Dashboard — physical inputs and LED state
+    signals:
+      - { name: button_flags, type: uint8_t, bits: 8, scale: 1, offset: 0, unit: "" }
+      - { name: rotary_1,     type: uint8_t, bits: 8, scale: 1, offset: 0, unit: "" }
+      - { name: rotary_2,     type: uint8_t, bits: 8, scale: 1, offset: 0, unit: "" }
+      - { name: led_flags,    type: uint8_t, bits: 8, scale: 1, offset: 0, unit: "" }
+      # bits 32-63 reserved

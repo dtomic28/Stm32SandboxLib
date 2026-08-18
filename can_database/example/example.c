@@ -38,8 +38,7 @@ static const CanDb_BusDriver_t mock_driver = { .send = MockCAN_Send };
 static void OnWheelSpeeds(const CanFrame_t *frame) {
     CanMsg_WheelSpeeds_t msg = CanCodec_WheelSpeeds_Decode(frame->data);
     printf("  [RX] WheelSpeeds  FL=%.1f  FR=%.1f  RL=%.1f  RR=%.1f RPM\n",
-           msg.fl / 10.0f, msg.fr / 10.0f,
-           msg.rl / 10.0f, msg.rr / 10.0f);
+           msg.fl, msg.fr, msg.rl, msg.rr);
 }
 
 static void OnPowertrainCtrl(const CanFrame_t *frame) {
@@ -86,57 +85,78 @@ int main(void) {
     CanDb_RegisterBus(CAN_BUS_SENSOR,     &mock_driver);
     CanDb_RegisterBus(CAN_BUS_DASHBOARD,  &mock_driver);
 
-    /* 2. Register RX handlers */
-    CanDb_RegisterHandler(CAN_ID_WHEEL_SPEEDS,    OnWheelSpeeds);
-    CanDb_RegisterHandler(CAN_ID_POWERTRAIN_CTRL, OnPowertrainCtrl);
-    CanDb_RegisterHandler(CAN_ID_BATTERY_STATUS,  OnBatteryStatus);
-    CanDb_RegisterHandler(CAN_ID_MOTOR_STATUS,    OnMotorStatus);
-    CanDb_RegisterHandler(CAN_ID_IMU_ACCEL,       OnIMUAccel);
-    CanDb_RegisterHandler(CAN_ID_DASHBOARD_CTRL,  OnDashboardCtrl);
+    /* 2. Subscribe to messages */
+    CanDb_Subscribe(CAN_ID_WHEEL_SPEEDS,    OnWheelSpeeds);
+    CanDb_Subscribe(CAN_ID_POWERTRAIN_CTRL, OnPowertrainCtrl);
+    CanDb_Subscribe(CAN_ID_BATTERY_STATUS,  OnBatteryStatus);
+    CanDb_Subscribe(CAN_ID_MOTOR_STATUS,    OnMotorStatus);
+    CanDb_Subscribe(CAN_ID_IMU_ACCEL,       OnIMUAccel);
+    CanDb_Subscribe(CAN_ID_DASHBOARD_CTRL,  OnDashboardCtrl);
 
     /* 3. Publish — internally encodes and calls MockCAN_Send */
     printf("=== TX (publish) ===\n");
-    CanDb_WheelSpeeds_Publish(1200, 1205, 1198, 1201);
-    CanDb_PowertrainCtrl_Publish(160, 0, 2500, 0x01);
-    CanDb_BatteryStatus_Publish(48200, -12500, 83, 38, 0x00);
-    CanDb_MotorStatus_Publish(7800, 1450, 82, 69, 0x0000);
-    CanDb_IMUAccel_Publish(120, -30, 980);
-    CanDb_DashboardCtrl_Publish(0x05, 3, 7, 0x0F);
 
-    /* 4. Simulate RX — craft frames manually and dispatch */
-    printf("\n=== RX (dispatch) ===\n");
+    CanMsg_WheelSpeeds_t wheel_speeds = { .fl = 120.0f, .fr = 120.5f, .rl = 119.8f, .rr = 120.1f };
+    CanDb_WheelSpeeds_Publish(&wheel_speeds);
+
+    CanMsg_PowertrainCtrl_t powertrain_ctrl = {
+        .throttle_pct = 160, .brake_pct = 0, .torque_limit = 2500, .flags = 0x01
+    };
+    CanDb_PowertrainCtrl_Publish(&powertrain_ctrl);
+
+    CanMsg_BatteryStatus_t battery_status = {
+        .voltage_mv = 48200, .current_ma = -12500, .soc_pct = 83, .temp_max = 38, .fault_flags = 0x00
+    };
+    CanDb_BatteryStatus_Publish(&battery_status);
+
+    CanMsg_MotorStatus_t motor_status = {
+        .rpm = 7800, .torque_actual = 1450, .temp_motor = 82, .temp_inverter = 69, .fault_flags = 0x0000
+    };
+    CanDb_MotorStatus_Publish(&motor_status);
+
+    CanMsg_IMUAccel_t imu_accel = { .accel_x = 120, .accel_y = -30, .accel_z = 980 };
+    CanDb_IMUAccel_Publish(&imu_accel);
+
+    CanMsg_DashboardCtrl_t dashboard_ctrl = {
+        .button_flags = 0x05, .rotary_1 = 3, .rotary_2 = 7, .led_flags = 0x0F
+    };
+    CanDb_DashboardCtrl_Publish(&dashboard_ctrl);
+
+    /* 4. Simulate RX — craft raw frames manually (no real hardware here)
+     *    and feed them in exactly as an RX interrupt would */
+    printf("\n=== RX (raw frames in) ===\n");
 
     CanFrame_t frame;
 
     frame.id = CAN_ID_WHEEL_SPEEDS; frame.dlc = 8;
-    CanCodec_WheelSpeeds_Encode(1200, 1205, 1198, 1201, frame.data);
-    CanDb_Dispatch(CAN_BUS_SENSOR, &frame);
+    CanCodec_WheelSpeeds_Encode(&wheel_speeds, frame.data);
+    CanDb_OnRawFrameReceived(CAN_BUS_SENSOR, &frame);
 
     frame.id = CAN_ID_POWERTRAIN_CTRL; frame.dlc = 8;
-    CanCodec_PowertrainCtrl_Encode(160, 0, 2500, 0x01, frame.data);
-    CanDb_Dispatch(CAN_BUS_POWERTRAIN, &frame);
+    CanCodec_PowertrainCtrl_Encode(&powertrain_ctrl, frame.data);
+    CanDb_OnRawFrameReceived(CAN_BUS_POWERTRAIN, &frame);
 
     frame.id = CAN_ID_BATTERY_STATUS; frame.dlc = 8;
-    CanCodec_BatteryStatus_Encode(48200, -12500, 83, 38, 0x00, frame.data);
-    CanDb_Dispatch(CAN_BUS_POWERTRAIN, &frame);
+    CanCodec_BatteryStatus_Encode(&battery_status, frame.data);
+    CanDb_OnRawFrameReceived(CAN_BUS_POWERTRAIN, &frame);
 
     frame.id = CAN_ID_MOTOR_STATUS; frame.dlc = 8;
-    CanCodec_MotorStatus_Encode(7800, 1450, 82, 69, 0x0000, frame.data);
-    CanDb_Dispatch(CAN_BUS_POWERTRAIN, &frame);
+    CanCodec_MotorStatus_Encode(&motor_status, frame.data);
+    CanDb_OnRawFrameReceived(CAN_BUS_POWERTRAIN, &frame);
 
     frame.id = CAN_ID_IMU_ACCEL; frame.dlc = 8;
-    CanCodec_IMUAccel_Encode(120, -30, 980, frame.data);
-    CanDb_Dispatch(CAN_BUS_SENSOR, &frame);
+    CanCodec_IMUAccel_Encode(&imu_accel, frame.data);
+    CanDb_OnRawFrameReceived(CAN_BUS_SENSOR, &frame);
 
     frame.id = CAN_ID_DASHBOARD_CTRL; frame.dlc = 8;
-    CanCodec_DashboardCtrl_Encode(0x05, 3, 7, 0x0F, frame.data);
-    CanDb_Dispatch(CAN_BUS_DASHBOARD, &frame);
+    CanCodec_DashboardCtrl_Encode(&dashboard_ctrl, frame.data);
+    CanDb_OnRawFrameReceived(CAN_BUS_DASHBOARD, &frame);
 
     /* 5. Unknown ID — silently dropped */
     printf("\n=== Unknown ID (should be dropped silently) ===\n");
     frame.id = 0xDEAD; frame.dlc = 8;
     memset(frame.data, 0xAB, 8);
-    CanDb_Dispatch(CAN_BUS_SENSOR, &frame);
+    CanDb_OnRawFrameReceived(CAN_BUS_SENSOR, &frame);
     printf("  (no output — correct)\n");
 
     return 0;
